@@ -1,8 +1,8 @@
-namespace Sort{
+namespace Util{
 
     class Sort{
-        static void Qsort(int[] arr){
-            int pivotIndex = arr.length / 2;
+        static int[] Qsort(int[] arr){
+            int pivotIndex = arr.Length / 2;
             int leftBound = 0;
             int rightBound = arr.Length - 1;
 
@@ -50,13 +50,36 @@ namespace Sort{
                     //thus the pivots position is right after the right bound
                     //this would be different if we moved the pivot to the beginning of the array instead of the end
             }
+                    int[] defaultRet = {1,2,3,4};
+                    return defaultRet;
         }
 
-        
-        private static swap(int[] arr, int leftInd, int rightInd){
-            int tempLeft = arr[leftInd];
-            arr[leftInd] = arr[rightInd];
-            arr[rightInd] = tempLeft;  
+        //will swap two positions in the array
+        //doesn't return new array but instead changes the original array in place
+        private static int[] swap(int[] arr, int leftInd, int rightInd){
+            int[] newArr = new int[arr.Length];
+            Array.Copy(arr, newArr, arr.Length);
+
+            int tempLeft = newArr[leftInd];
+            newArr[leftInd] = newArr[rightInd];
+            newArr[rightInd] = tempLeft; 
+
+            return newArr; 
+        }
+
+        public static bool testSwap(){
+            int[] expected = {5,2,3,4,1};
+            int[] input = {1,2,3,4,5};
+            int[] output;
+
+            output = swap(input, 0, 4);
+
+            for(int i = 0; i < expected.Length; i++){
+                if(expected[i] != output[i]){
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
