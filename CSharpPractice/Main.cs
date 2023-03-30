@@ -10,8 +10,13 @@ namespace Main
     {
       VolumeCalc calculator = new VolumeCalc();
 
-      bool testResult = Sort.testSwap();
-      Console.Write(testResult);
+      int[] testArr = {17, 4, 7, 12, 9};
+
+      int[] testResult = Sort.Qsort(testArr);
+
+      foreach(int num in testResult){
+        Console.WriteLine(num);
+      }
       // int[] arr = {1,2,3,4,4};
       // int retval = calculator.CalcVolume(arr);
       // Console.Write(retval);

@@ -1,12 +1,10 @@
 namespace Util{
 
     class Sort{
-        static int[] Qsort(int[] arr){
+        public static int[] Qsort(int[] arr){
             int pivotIndex = arr.Length / 2;
             int leftBound = 0;
             int rightBound = arr.Length - 1;
-
-            bool boundsNotCrossed = leftBound<rightBound;
 
             if(arr.Length <= 1){
                 return arr;
@@ -16,42 +14,43 @@ namespace Util{
             int temp = arr[pivotIndex];
             arr[pivotIndex] = arr[arr.Length-1];
             arr[arr.Length-1] = temp;
+            pivotIndex = arr.Length-1;
 
-            while(boundsNotCrossed){
-                //if left bound is greater than pivot
-                //left bound stays where it is
+            while(leftBound<=rightBound){
+                if(arr[leftBound] >= arr[pivotIndex] && arr[rightBound] <= arr[pivotIndex]){
+                    arr = swap(arr, leftBound, rightBound);
+                }
+
+                //check bounds and move them if necessary
                 if(!(arr[leftBound] > arr[pivotIndex])){
                     leftBound += 1;
                 }
 
-                //and right bound is less than pivot
-                //right bound stays where it is
                 if(!(arr[rightBound] < arr[pivotIndex])){
                     rightBound -= 1;
                 }
-
-                if(arr[leftBound] > arr[pivotIndex] && arr[rightBound] < arr[pivotIndex]){
-                    int tempLeft = arr[leftBound];
-                    arr[leftBound] = arr[rightBound];
-                    arr[rightBound] = tempLeft;
-                }
-
-                //when they are both staying
-                //switch
-
-                //if bounds are crossed
-                //swap pivot with left bound
-
-
-                    //NOT SUDO CODE JUST NOTES
-                    //this is because either left bound will stop on something greater
-                    //and thus the element belongs in right array
-                    //or right bound stopped on something smaller and left bound crossed
-                    //thus the pivots position is right after the right bound
-                    //this would be different if we moved the pivot to the beginning of the array instead of the end
             }
-                    int[] defaultRet = {1,2,3,4};
-                    return defaultRet;
+
+            //swap pivot to its final location
+            arr = swap(arr, leftBound, pivotIndex);
+
+            //create new arrays for recursion.
+            int[] left = new int[leftBound];
+            int[] right = new int[arr.Length - leftBound];
+            Array.Copy(arr, 0, left, 0, left.Length);
+            Array.Copy(arr, leftBound, right, 0, arr.Length - leftBound);
+
+            //Recursively sort those new arrays
+            left = Qsort(left);
+            right = Qsort(right);
+
+            //construct new return array
+            int[] returnArr = new int[arr.Length];
+            Array.Copy(left, 0, returnArr, 0, left.Length);
+           // returnArr[leftBound] = arr[leftBound];
+            Array.Copy(right, 0, returnArr, left.Length, right.Length);
+
+            return returnArr;
         }
 
         //will swap two positions in the array
@@ -67,6 +66,7 @@ namespace Util{
             return newArr; 
         }
 
+        //tests
         public static bool testSwap(){
             int[] expected = {5,2,3,4,1};
             int[] input = {1,2,3,4,5};
